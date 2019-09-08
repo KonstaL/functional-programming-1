@@ -16,10 +16,21 @@ validFinnishIBAN full@(x:y:xs)
     | length full /= 18 = False
     | x /= 'F' || y /= 'I' = False
     | not (containsOnlyDigits xs) = False 
-    | otherwise = True
+    | otherwise = 
+        let (ib1, ib2) = splitAt 4 full
+            shifted = ib2 ++ ib1
+            mapped = concat (map chartToIbanInt shifted) :: String
+        in
+            if mod (read mapped) 97 == 1 then True
+            else False
 
 
-   
+
+chartToIbanInt :: Char -> String
+chartToIbanInt n
+    | isAlpha n = show (ord (toUpper n) - ord 'A' + 10)
+    | isDigit n = [n]
+    | otherwise = error (n : " is not an IBAN character!")
 
 -- 1-1
 containsOnlyDigits :: [Char] -> Bool
