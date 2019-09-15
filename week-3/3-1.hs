@@ -8,9 +8,14 @@ Give functions to compute the following:
 Note: Your functions needs to actually compute these values.
 -}
 
-getOddNumChars :: String -> String
-getOddNumChars "" = "";
-getOddNumChars str@(x:xs) = [ x | x <- str, let y = (lookup x paired) , y /= Nothing, let z =  (Just y), odd z]
+import Data.List
+
+getOddNumChars :: String
+getOddNumChars = [ x | (x, y) <- paired, odd y  ]
     where 
         paired = zip ['a'..'z'] [1..] :: [(Char, Int)]
-        mappadStr = map (\x -> lookup x paired) str
+
+getOddNumProductChars :: String
+getOddNumProductChars = nub [ x | (x, y) <- paired, odd1 <-take 20 [3,5 ..], odd2 <- take 20 [3,5 ..], y == odd1*odd2   ]
+    where 
+        paired = zip ['a'..'z'] [1..] :: [(Char, Int)]
